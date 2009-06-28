@@ -35,11 +35,15 @@ do_exit()
 
 get_moduleset_from_git()
 {
-    curl -s "$BASEURL/modulesets/$1" -o $SOURCE/jhbuild/modulesets/$1
+    curl -s "$BASEURL/modulesets-stable/$1" -o $SOURCE/jhbuild/modulesets/$1
 }
 
 if test x`which svn` == x; then
     do_exit "Svn (subversion) is not available, please install it and try again."
+fi
+
+if test x`which git` == x; then
+    do_exit "Git is not available, please install it and try again."
 fi
 
 mkdir -p $SOURCE 2>/dev/null || do_exit "The directory $SOURCE could not be created. Check permissions and try again."
@@ -51,13 +55,16 @@ if test x"$JHBUILD_REVISION" = x; then
     do_exit "Could not find jhbuild revision to use."
 fi
 
-JHBUILD_REVISION_OPTION="-r$JHBUILD_REVISION"
+JHBUILD_REVISION_OPTION="origin refs/tags/$JHBUILD_REVISION"
 
 echo "Checking out jhbuild ($JHBUILD_REVISION) from git..."
 if ! test -d $SOURCE/jhbuild; then
-    (cd $SOURCE ; git clone git://git.gnome.org/jhbuild )
+    cd $SOURCE 
+    git clone git://git.gnome.org/jhbuild 
+    cd jhbuild
+    git checkout -b stable $JHBUILD_REVISION;
 else
-    (cd $SOURCE/jhbuild && git pull >/dev/null)
+    cd $SOURCE/jhbuild && git pull $JHBUILD_REVISION_OPTION >/dev/null;
 fi
 
 echo "Installing jhbuild..."
@@ -67,6 +74,7 @@ echo "Installing jhbuild configuration..."
 curl -s $BASEURL/jhbuildrc-gtk-osx -o $HOME/.jhbuildrc
 curl -s $BASEURL/jhbuildrc-gtk-osx-fw-10.4 -o $HOME/.jhbuildrc-fw-10.4
 curl -s $BASEURL/jhbuildrc-gtk-osx-cfw-10.4 -o $HOME/.jhbuildrc-cfw-10.4
+curl -s $BASEURL/jhbuildrc-gtk-osx-cfw-10.4u -o $HOME/.jhbuildrc-cfw-10.4u
 curl -s $BASEURL/jhbuildrc-gtk-osx-fw-10.4-test -o $HOME/.jhbuildrc-fw-10.4-test
 if [ ! -f $HOME/.jhbuildrc-custom ]; then
     curl -s $BASEURL/jhbuildrc-gtk-osx-custom-example -o $HOME/.jhbuildrc-custom
@@ -78,8 +86,8 @@ for m in $MODULES; do
     get_moduleset_from_git $m
 done
 
-if test "x`echo $PATH | grep $HOME/bin`" == x; then
-    echo "PATH does not contain $HOME/bin, it is recommended that you add that."
+if test "x`echo $PATH | grep $HOME/.local/bin`" == x; then
+    echo "PATH does not contain $HOME/.local/bin, it is recommended that you add that."
     echo 
 fi
 
