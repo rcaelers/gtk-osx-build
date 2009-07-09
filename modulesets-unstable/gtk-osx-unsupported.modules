@@ -29,7 +29,7 @@
   </metamodule>
 
   <autotools id="gnome-mime-data">
-   <branch tag="GNOME_MIME_DATA_2_18_0"/>
+   <branch />
     <dependencies>
       <dep package="gnome-common"/>
       <dep package="glib"/>
@@ -37,7 +37,7 @@
   </autotools>
 
   <autotools id="iso-codes" >
-    <branch repo="git.debian.org" tag="iso-codes/3.10"
+    <branch repo="git.debian.org" 
             module="iso-codes/iso-codes"/>
 
   </autotools>
@@ -58,7 +58,7 @@
 	     autogen-template="%(srcdir)s/%(autogen-sh)s &amp;&amp; %(srcdir)s/configure --prefix %(prefix)s --libdir %(libdir)s %(autogenargs)s">
     <!-- No tags yet, this is right after import from CVS. -->
     <branch repo="git.gnu.org" module="opencdk"
-            tag="e79ee9f244dbc94f570a35b09af026e933a08f11"/>
+            />
     <dependencies>
       <dep package="libgcrypt" />
     </dependencies>
@@ -67,13 +67,13 @@
   <autotools id="libgpg-error" 
              autogen-template="%(srcdir)s/%(autogen-sh)s &amp;&amp; %(srcdir)s/configure --prefix %(prefix)s --libdir %(libdir)s %(autogenargs)s">
     <branch repo='cvs.gnupg.org' module="libgpg-error" 
-            tag="libgpg-error-1.7"/>
+            />
   </autotools>
 
   <autotools id="libgcrypt"     autogen-sh="configure">
  
 <!-- CVS version requires fig2dev, an X11 utility.   
-     <branch repo='cvs.gnupg.org' tag="libgcrypt-1.4.4" module='libgcrypt'/> -->
+     <branch repo='cvs.gnupg.org'  module='libgcrypt'/> -->
     <branch repo='ftp.gnupg.org' version='1.4.4'
 	    module='gcrypt/libgcrypt/libgcrypt-1.4.4.tar.bz2'/>
     <dependencies>
@@ -83,13 +83,13 @@
 
   <autotools id="libtasn1" supports-non-srcdir-builds="no" >
     <!-- Git repository is missing files required to build libtasn1
-    <branch repo="git.gnu.org" tag="libtasn1_2_2"  module="libtasn1"/> -->
+    <branch repo="git.gnu.org" /> -->
     <branch repo="ftp.gnu.org" version='2.2'
 	    module="gnutls/libtasn1-2.2.tar.gz"/>
   </autotools>
 
   <autotools id="libsoup">
-    <branch revision="gnome-2-26"/>
+    <branch />
     <dependencies>
       <dep package="glib"/>
       <dep package="gnutls"/>
@@ -111,18 +111,20 @@
   <autotools id='libproxy' autogenargs='CFLAGS=" "' 
 	     autogen-template="%(srcdir)s/%(autogen-sh)s &amp;&amp; %(srcdir)s/configure --prefix %(prefix)s --libdir %(libdir)s %(autogenargs)s">
     <branch repo='libproxy.google.com' 
-            tag="libproxy-0.2.3" />
+             />
   </autotools>
 
 <!-- GNET is deprecated in favor of Glib/Gio. Don't build this unless you have to -->
   <autotools id="gnet" autogenargs="--enable-glib2">
-    <branch tag="GNET_2_0_8"/>
+    <branch />
     <dependencies>
       <dep package="glib"/>
     </dependencies>
   </autotools>
 
-  <autotools id="WebKit" autogenargs="--disable-video --with-http-backend=curl --disable-dom-storage --disable-database --disable-icon-database --disable-svg --with-target=quartz --with-font-backend=pango --disable-offline-web-applications"
+  <repository type="git" name="git.debian.org" href="git://git.debian.org/"/>
+
+    <autotools id="WebKit" autogenargs="--disable-video --with-http-backend=curl --disable-dom-storage --disable-database --disable-icon-database --disable-svg --with-target=quartz --with-font-backend=pango --disable-offline-web-applications"
       makefile="GNUmakefile">
     <branch repo="git.debian.org" module="git/pkg-webkit/upstream.git"
       checkoutdir="WebKit" revision="filtered"/>
