@@ -237,4 +237,12 @@
     <branch module="sqlite-3.6.15.tar.gz" version='3.6.15' repo="sqlite"/>
   </autotools>
 
+  <autotools id="gnet" autogenargs="--enable-glib2">
+    <branch repo="ftp.gnome.org" version="2.0.8 "
+            module="gnet/2.0/gnet-2.0.8.tar.bz2"/>
+    <dependencies>
+      <dep package="glib"/>
+    </dependencies>
+  </autotools>
+  
 </moduleset>
