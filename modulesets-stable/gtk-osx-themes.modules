@@ -10,6 +10,8 @@
               href="http://tango.freedesktop.org/releases/"/>
   <repository type="tarball" name="icon-theme.freedesktop.org"
 	      href="http://icon-theme.freedesktop.org/releases"/>
+  <repository type="git" name="github.com"
+              href="git://github.com/"/>
 
   <metamodule id="meta-gtk-osx-themes">
     <dependencies>
@@ -67,6 +69,14 @@
   </autotools>
 
   <autotools id="gtk-quartz-engine">
+    <branch module="rcaelers/gtk-quartz-engine"
+            repo="github.com"  />
+    <after>
+      <dep package="meta-gtk-osx-core"/>
+    </after>
+  </autotools>
+  
+  <autotools id="gtk-quartz-engine-really-stable">
     <branch module="gtk-osx/gtk-quartz-engine-0.1.tar.gz"
             repo="sourceforge" version="0.1" />
     <after>
