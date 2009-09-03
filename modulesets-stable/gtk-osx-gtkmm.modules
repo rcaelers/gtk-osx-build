@@ -16,7 +16,7 @@
   </metamodule>
 
   <autotools id="cairomm" autogen-sh="configure">
-    <branch module="cairomm-1.8.0.tar.gz" version="1.8.0" 
+    <branch module="cairomm-1.8.2.tar.gz" version="1.8.2" 
             repo="cairographics" />
     <dependencies>
       <dep package="cairo"/>
