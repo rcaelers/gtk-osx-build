@@ -52,8 +52,8 @@
   </metamodule>
 
   <autotools id="glib" autogen-sh="configure">
-    <branch module="glib/2.20/glib-2.20.4.tar.bz2"  version="2.20.4"
-            md5sum="346916673c0eab72191cf44b4afe535f"/>
+    <branch module="glib/2.20/glib-2.20.5.tar.bz2"  version="2.20.5"
+            hash="sha256:88f092769df5ce9f784c1068a3055ede00ada503317653984101d5393de63655"/>
     <after>
       <dep package="meta-gtk-osx-bootstrap"/>
       <dep package="gtk-doc"/> 
@@ -89,8 +89,8 @@
 
   <autotools id="gtk+"  autogen-sh="configure"
              autogenargs="--with-gdktarget=quartz --without-libjasper">
-    <branch module="gtk+/2.16/gtk+-2.16.5.tar.bz2" version="2.16.5"
-            hash="sha256:bd6d227cca010ecc5ad722f476cf9485194946ccc9250c6a1349182e68ad8500"/>
+    <branch module="gtk+/2.16/gtk+-2.16.6.tar.bz2" version="2.16.6"
+            hash="sha256:18e0f9792028e6cc5108447678f17d396f9a2cdfec1e6ab5dca98cb844f954af"/>
     <dependencies>
       <dep package="pango"/>
       <dep package="atk"/>
@@ -101,7 +101,7 @@
   </autotools>
 
   <autotools id="pixman" autogenargs="--disable-gtk" autogen-sh="configure">
-    <branch version="0.15.18" module="pixman-0.15.18.tar.gz" 
+    <branch version="0.16.0" module="pixman-0.16.0.tar.gz" 
             repo="cairographics"/>
     <after>
       <dep package="meta-gtk-osx-bootstrap"/>
