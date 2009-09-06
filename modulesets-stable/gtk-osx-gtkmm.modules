@@ -24,8 +24,8 @@
   </autotools>
 
   <autotools id="glibmm" autogen-sh="configure">
-    <branch module="glibmm/2.20/glibmm-2.20.0.tar.bz2" version="2.20.0"
-            md5sum="38fa409b531144c238b6e2532e351799"/>
+    <branch module="glibmm/2.20/glibmm-2.20.1.tar.bz2" version="2.20.1"
+            hash="sha256:8436e9f775a6ee0b4dd407fb6cb708a76e90e6255fe2fffffcd5f885d865651b"/>
     <dependencies>
       <dep package="glib"/>
       <dep package="libsigc++2"/>
@@ -49,8 +49,8 @@
   </autotools>
 
   <autotools id="libsigc++2" autogen-sh="configure">
-    <branch module="libsigc++/2.2/libsigc++-2.2.3.tar.bz2" version="2.2.3"
-            md5sum="f4574b343eebc4bff66a9e1e5ce6e490"/>
+    <branch module="libsigc++/2.2/libsigc++-2.2.4.2.tar.bz2" version="2.2.4.2"
+            hash="sha256:998e4af392090a0db15102ba0f753fc6fc636574956c8292eb615a2a7823e201"/>
     <dependencies>
       <dep package="doxygen"/>
     </dependencies>
