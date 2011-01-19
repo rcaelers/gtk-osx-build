@@ -8,6 +8,10 @@
               href="http://downloads.sourceforge.net/sourceforge/"/>
   <repository type="tarball" name="cairographics"
               href="http://cairographics.org/releases/"/>
+  <repository type="tarball" name="ftp.gnu.org"
+              href="http://ftp.gnu.org/gnu/"/>
+  <repository type="tarball" name="github.com"
+              href="https://github.com/"/>
 
   <!-- This module set works a bit differently than for example the
        GNOME ones do. It's split up in seperate pieces:
@@ -52,22 +56,52 @@
   </metamodule>
 
   <autotools id="glib" autogen-sh="configure">
-    <branch module="glib/2.20/glib-2.20.5.tar.bz2"  version="2.20.5"
-            hash="sha256:88f092769df5ce9f784c1068a3055ede00ada503317653984101d5393de63655"/>
+    <branch module="glib/2.24/glib-2.24.1.tar.bz2"  version="2.24.1"
+            hash="sha256:014c3da960bf17117371075c16495f05f36501db990851ceea658f15d2ea6d04"/>
     <after>
       <dep package="meta-gtk-osx-bootstrap"/>
       <dep package="gtk-doc"/> 
+      <!-- dep package="libiconv"/ -->
     </after>
+  </autotools>
+
+  <autotools id="libffi">
+    <branch module="atgreen/libffi/tarball/v3.0.9" repo="github.com" 
+            version="3.0.9" checkoutdir="atgreen-libffi-873d687"/>
+  </autotools>
+
+  <autotools id="gobject-introspection">
+    <branch module="gobject-introspection/0.9/gobject-introspection-0.9.3.tar.bz2"
+            version="0.9.2"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="cairo"/>
+     <dep package="libffi"/>
+    </dependencies>
+  </autotools>
+
+   <autotools id="gir-repository">
+    <branch module="gir-repository/0.6/gir-repository-0.6.5.tar.bz2" 
+            version="0.6.5"/>
+    <dependencies>
+      <dep package="gobject-introspection"/>
+    </dependencies>
   </autotools>
 
   <autotools id="pango"  autogen-sh="configure"
              autogenargs="--without-x --with-included-modules=basic-atsui"
              makeargs="-k -C modules; make">
-    <branch version="1.24.5" module="pango/1.24/pango-1.24.5.tar.bz2"
-            hash="sha256:0f733d1ec3e8dafcae152d7ac58f1090bee1fd856176c8fee0e81b0e42392f4e"/>
+    <!-- The last version that will build on Tiger is 1.24.5 -->
+    <branch version="1.28.1" module="pango/1.28/pango-1.28.1.tar.bz2"
+            hash="sha256:8f3eaab506f613dd25bb1fa65ea87a145d523d066d90c227bdb3016523451bc2">
+<!--    <branch version="1.24.5" module="pango/1.24/pango-1.24.5.tar.bz2"
+            hash="sha256:0f733d1ec3e8dafcae152d7ac58f1090bee1fd856176c8fee0e81b0e42392f4e">-->
+  <patch file="https://github.com/jralls/gtk-osx-build/raw/master/patches/pangoatsui-fontname.patch" strip="1"/> 
+    </branch>
     <dependencies>
       <dep package="glib"/>
       <dep package="cairo"/>
+<!--      <dep package="gobject-introspection"/> -->
       <dep package="fontconfig"/>
       <dep package="freetype"/>
     </dependencies>
@@ -77,8 +111,8 @@
   </autotools>
 
  <autotools id="atk" autogen-sh="configure">
-    <branch module="atk/1.26/atk-1.26.0.tar.bz2" version="1.26.0"
-            md5sum="719229408019c548855673840679f156"/>
+    <branch module="atk/1.30/atk-1.30.0.tar.bz2" version="1.30.0"
+            hash="sha256:92b9b1213cafc68fe9c3806273b968c26423237d7b1f631dd83dc5270b8c268c"/>
     <dependencies>
       <dep package="glib"/>
     </dependencies>
@@ -88,12 +122,23 @@
   </autotools>
 
   <autotools id="gtk+"  autogen-sh="configure"
-             autogenargs="--with-gdktarget=quartz --without-libjasper">
-    <branch module="gtk+/2.16/gtk+-2.16.6.tar.bz2" version="2.16.6"
-            hash="sha256:18e0f9792028e6cc5108447678f17d396f9a2cdfec1e6ab5dca98cb844f954af"/>
+             autogenargs="--with-gdktarget=quartz">
+    <branch module="gtk+/2.20/gtk+-2.20.1.tar.bz2" version="2.20.1"
+            hash="sha256:0e081731d21e34ff45c82199490c2889504fa8b3c7e117c043e82ababaec0f65">
+      <patch file="https://github.com/jralls/gtk-osx-build/raw/master/patches/gtkselection.patch" strip="1"/>
+      <patch file="https://github.com/jralls/gtk-osx-build/raw/master/patches/gtkcups.patch" strip="1"/>
+      <patch file="https://github.com/jralls/gtk-osx-build/raw/master/patches/gdkwindow-quartz.patch" strip="1"/>
+      <patch file="https://github.com/jralls/gtk-osx-build/raw/master/patches/gtk-introspection.patch" strip="1"/>
+      <patch file="https://github.com/jralls/gtk-osx-build/raw/master/patches/gtk-keyhash.patch" strip="1"/>
+      <patch file="https://github.com/jralls/gtk-osx-build/raw/master/patches/gtk-relocation.patch" strip="1"/>
+      <patch file="https://github.com/jralls/gtk-osx-build/raw/master/patches/gdk-deadkeys.patch" strip="1"/>
+      <patch file="https://github.com/jralls/gtk-osx-build/raw/master/patches/gdkeventloop.patch" strip="1"/>
+      <patch file="https://github.com/jralls/gtk-osx-build/raw/master/patches/gtkdndmemory.patch" strip="1"/>
+    </branch>
     <dependencies>
       <dep package="pango"/>
       <dep package="atk"/>
+<!--      <dep package="gir-repository"/> -->
     </dependencies>
     <after>
       <dep package="meta-gtk-osx-bootstrap"/>
@@ -109,7 +154,7 @@
   </autotools>
 
   <autotools id="cairo"  autogen-sh="configure"
-             autogenargs="--enable-pdf --enable-quartz --disable-xlib">
+             autogenargs="--enable-pdf --enable-quartz --enable-xlib=no --without-x">
     <branch module="cairo-1.8.8.tar.gz"  version="1.8.8" repo="cairographics"/>
     <dependencies>
       <dep package="pixman"/>
@@ -124,8 +169,9 @@
   <autotools id="ige-mac-integration" autogen-sh="configure"
              autogenargs="--disable-python">
     <branch repo="sourceforge"
-	    module="gtk-osx/ige-mac-integration-0.8.6.tar.gz"
-            version="0.8.6" />
+	    module="gtk-osx/ige-mac-integration-0.9.7.tar.bz2"
+            version="0.9.7">
+    </branch>
     <dependencies>
       <dep package="gtk+"/>
     </dependencies>

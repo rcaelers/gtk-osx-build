@@ -15,7 +15,11 @@
               href="ftp://pkg-isocodes.alioth.debian.org/pub/"/>
   <repository type='tarball' name='libproxy.google.com'
               href='http://libproxy.googlecode.com/files/'/>
-  <repository type="git" name="git.debian.org" href="git://git.debian.org/"/>
+  <repository type="tarball" name="webkit.org"
+              href="http://www.webkitgtk.org/"/>
+  <repository type="svn" name="svn.webkit.org"
+	      href="http://svn.webkit.org/repository/"/>
+
 
   <metamodule id="meta-gtk-osx-unsupported">
     <dependencies>
@@ -34,14 +38,14 @@
   </autotools>
 
   <autotools id="iso-codes" autogen-sh="configure" >
-    <branch repo="iso-codes" version="3.9"
-            module="pkg-isocodes/iso-codes-3.9.tar.gz"/>
+    <branch repo="iso-codes" version="3.21"
+            module="pkg-isocodes/iso-codes-3.21.tar.bz2"/>
 
   </autotools>
 
   <autotools id="gnutls" autogen-sh="configure">
-    <branch repo='ftp.gnu.org' version='2.8.1' 
-            module="gnutls/gnutls-2.8.1.tar.bz2"/>
+    <branch repo='ftp.gnu.org' version='2.8.4' 
+            module="gnutls/gnutls-2.8.4.tar.bz2"/>
     <dependencies>
       <dep package="libgcrypt" />
       <dep package="libtasn1" />
@@ -49,8 +53,8 @@
     </dependencies>
   </autotools>
 
-  <autotools id='libproxy' autogen-sh='configure' autogenargs='CFLAGS=" "' >
-    <branch version='0.2.3' module='libproxy-0.2.3.tar.gz'
+  <autotools id='libproxy' autogen-sh='configure' >
+    <branch version='0.3.1' module='libproxy-0.3.1.tar.bz2'
             repo='libproxy.google.com'/>
   </autotools>
 
@@ -67,8 +71,8 @@
 -->
 
   <autotools id="gnome-keyring">
-    <branch module="gnome-keyring/2.26/gnome-keyring-2.26.1.tar.bz2" 
-	    version="2.26.1" md5sum="060b349a0aae130fdd3cd0a9827258c6"/>
+    <branch module="gnome-keyring/2.28/gnome-keyring-2.28.0.tar.bz2" 
+	    version="2.28.0" hash="sha256:1b3234f1feac6a619a9a61a0b5f67ab8cd89d94aeeec9a5cc2d78b81d9d8cab4"/>
     <dependencies>
       <dep package="gtk+"/>
       <dep package="libgcrypt"/>
@@ -78,21 +82,23 @@
 
   <autotools id="libsoup" autogen-sh="configure" >
     <!-- Development version demanded by WebKit -->
-    <branch module="libsoup/2.27/libsoup-2.27.4.tar.bz2"
-            version="2.27.4" md5sum="c9b676621f1b89245ec5cec0c67198b7" />
+    <branch module="libsoup/2.28/libsoup-2.28.0.tar.bz2"
+            version="2.28.0" hash="sha256:647217d395d560375551056e291d697543d424eb6363e101c334a01a0b8c6fb6" />
     <dependencies>
       <dep package="glib"/>
       <dep package="gnutls"/>
       <dep package='gconf'/>
       <dep package="libxml2"/>
+      <dep package="libproxy"/>
       <dep package="gnome-keyring"/>
+      <dep package='sqlite'/>
     </dependencies>
   </autotools>
 
-  <autotools id="enchant" autogen-sh="configure" >
-    <branch module="1.4.2/enchant-1.4.2.tar.gz" version="1.4.2"
-	    repo="abisource/enchant" size='595192'
-	    md5sum="fe4558269ff59f569ab9581c907d58cb" />
+  <autotools id="enchant" autogen-sh="configure" 
+	     autogenargs="--with-myspell-dir=/Library/Dictionaries">
+    <branch module="1.6.0/enchant-1.6.0.tar.gz" version="1.6.0"
+	    repo="abisource/enchant"/>
     <dependencies>
       <dep package="glib"/>
     </dependencies>
@@ -113,19 +119,59 @@
 
   <autotools id="libtasn1" supports-non-srcdir-builds="no"
 	     autogen-sh="configure">
-    <branch repo="ftp.gnu.org" version='2.2'
-	    module="gnutls/libtasn1-2.2.tar.gz"/>
+    <branch repo="ftp.gnu.org" version='2.3'
+	    module="libtasn1/libtasn1-2.3.tar.gz"/>
   </autotools>
 
-    <autotools id="WebKit" autogenargs="--disable-video --with-http-backend=curl --disable-dom-storage --disable-database --disable-icon-database --disable-svg --with-target=quartz --with-font-backend=pango --disable-offline-web-applications"
-      makefile="GNUmakefile">
-    <branch repo="git.debian.org" module="git/pkg-webkit/upstream.git"
-      checkoutdir="WebKit" revision="filtered"/>
+  <autotools id="at-spi" autogen-sh='configure'  autogenargs="--without-x">
+    <branch module="at-spi/1.28/at-spi-1.28.0.tar.bz2" version="1.28"
+	    hash="sha256:ebe22221dc6a9852e6cf6c4d1e8d78bd19d0fda76a8eb8fc46655e9c9b096667"/>
+  </autotools>
+
+  <autotools id="panelapplet" autogen-sh="configure">
+    <branch module="libpanelappletmm/2.26/libpanelapplet-2.26.0.tar.bz2"
+	    version="2.26.0" md5sum="def2bc3298dd9ffc3838bf5245e5939e"/>
+  </autotools>
+
+  <autotools id="libgail" autogen-sh="configure">
+    <branch module="libgail-gnome/1.20/libgail-gnome-1.20.1.tar.bz2"
+	    version="1.20.1" md5sum="5c5b71af5a8ab2a9403bdae52b20e46c"/>
+    <dependencies>
+      <dep package="at-spi"/>
+      <dep package="panelapplet"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="WebKit" autogen-sh="configure"
+	     autogenargs="--with-target=quartz --disable-video --with-font-backend=pango">
+    <!--branch repo="webkit.org" module="webkit-1.1.12.tar.gz" version="1.1.12">
+      <patch file="https://github.com/jralls/gtk-osx-build/raw/master/patches/webkit.patch" strip="1"/ -->
+    <branch repo="webkit.org" module="webkit-1.1.15.4.tar.gz" version="1.1.15">
+      <patch file="https://github.com/jralls/gtk-osx-build/raw/master/patches/webkit-1.1.15.patch" strip="1"/>
+      <patch file="https://github.com/jralls/gtk-osx-build/raw/master/patches/webkit-disallowctype.patch" strip="1"/>
+    </branch>
     <dependencies>
       <dep package="libsoup"/>
       <dep package="enchant"/>
+      <!--dep package="libgail"/-->
     </dependencies>
-  <after>
+    <after>
+      <dep package="meta-gtk-osx-core"/>
+      <dep package="libcurl"/>
+      <dep package="bison"/>
+      <!--dep package="gst-plugins-base"/-->
+    </after>
+  </autotools>
+
+  <autotools id="WebKit-svn" 
+	     autogenargs="--with-target=quartz --disable-video --with-font-backend=pango">
+    <branch repo="svn.webkit.org" module="webkit/trunk" checkoutdir="WebKit"/>
+    <dependencies>
+      <dep package="libsoup"/>
+      <dep package="enchant"/>
+      <!--dep package="libgail"/-->
+    </dependencies>
+    <after>
       <dep package="meta-gtk-osx-core"/>
       <dep package="libcurl"/>
       <dep package="bison"/>

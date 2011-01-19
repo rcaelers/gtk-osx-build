@@ -106,7 +106,7 @@
     </dependencies>
   </autotools>
 
-  <autotools id="glade3">
+  <autotools id="glade3" autogenargs="--disable-scrollkeeper">
     <branch />
     <after>
       <dep package="meta-gtk-osx-bootstrap"/>
@@ -147,7 +147,7 @@
 	   --with-session-socket-dir=/var/tmp">
     <branch module="dbus/dbus-1.2.12.tar.gz"  version="1.2.12" 
 	    repo="dbus.freedesktop.org">
-      <patch file="http://github.com/jralls/gnucash-on-osx/raw/master/patches/dbus-install.patch"/>
+      <patch file="https://github.com/jralls/gnucash-on-osx/raw/master/patches/dbus-install.patch"/>
       <patch file="http://gimponosx.svn.sourceforge.net/viewvc/gimponosx/GimpPorts/ports/devel/dbus/files/dbus-sysdeps-unix.c.diff"/>
     </branch>
     <after>
@@ -168,9 +168,9 @@
     </after>
   </autotools>
 
-  <!-- Note: GConf > 2.26.0 requires something called "PolicyKit"
+  <!-- Note: -disable-defaults-service removes dependency on "PolicyKit"
        which is available only through svn or from Linux distros -->
-  <autotools id="gconf">
+  <autotools id="gconf" autogenargs="--disable-defaults-service">
     <branch />
     <dependencies>
       <dep package="ORBit2"/>
@@ -197,7 +197,7 @@
 
   <autotools id="gimp" 
              autogenargs="--disable-python --disable-print --without-x
-                          --without-dbus --without-gnomevfs"
+                          --without-dbus --without-gnomevfs --without-wmf"
              makeargs='LDFLAGS="-framework Carbon"'>
     <branch />
     <after>

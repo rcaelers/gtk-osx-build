@@ -5,6 +5,7 @@
 
   <repository type="git" name="git.gnome.org" default="yes" 
               href="git://git.gnome.org/"/>
+  <repository type="git" name="github" href="git://github.com/"/>
   <repository type="cvs" name="cairographics" 
               cvsroot=":pserver:anoncvs@anoncvs.freedesktop.org:/cvs/cairo"
               password=""/>
@@ -27,14 +28,14 @@
     </after>
   </autotools>
 
-  <autotools id="pygobject">
+  <autotools id="pygobject" autogenargs="--disable-introspection">
     <branch />
     <dependencies>
       <dep package="meta-gtk-osx-core"/>
     </dependencies>
   </autotools>
 
-  <autotools id="pygtk">
+  <autotools id="pygtk" autogenargs="--disable-introspection">
     <branch />
     <dependencies>
       <dep package="pygobject"/>
@@ -42,6 +43,17 @@
       <dep package="pycairo"/>
       <dep package="libglade"/>
     </dependencies>
+  </autotools>
+
+  <autotools id="ige-mac-integration">
+    <branch repo="github"
+	    module="jralls/ige-mac-integration" />
+    <dependencies>
+      <dep package="gtk+"/>
+    </dependencies>
+    <after>
+      <dep package="meta-gtk-osx-bootstrap"/>
+    </after>
   </autotools>
 
 </moduleset>

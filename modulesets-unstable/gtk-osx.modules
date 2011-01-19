@@ -50,12 +50,32 @@
     </after>
   </metamodule>
 
-  <autotools id="glib">
+  <autotools id="glib" autogenargs="--disable-dtrace">
     <branch />
     <after>
       <dep package="meta-gtk-osx-bootstrap"/>
       <dep package="gtk-doc"/> <!-- FIXME: http://bugs.gnome.org/546640 -->
     </after>
+  </autotools>
+
+  <autotools id="libffi">
+    <branch module="atgreen/libffi" repo="github"/>
+  </autotools>
+
+  <autotools id="gobject-introspection">
+    <branch/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="cairo"/>
+     <dep package="libffi"/>
+    </dependencies>
+  </autotools>
+
+   <autotools id="gir-repository">
+    <branch/>
+    <dependencies>
+      <dep package="gobject-introspection"/>
+    </dependencies>
   </autotools>
 
   <autotools id="pango" 
@@ -64,6 +84,7 @@
     <branch />
     <dependencies>
       <dep package="glib"/>
+      <dep package="gobject-introspection"/>
       <dep package="cairo"/>
       <dep package="fontconfig"/>
       <dep package="freetype"/>
@@ -83,10 +104,21 @@
     </after>
   </autotools>
 
-  <autotools id="gtk+" autogenargs="--with-gdktarget=quartz --without-libjasper">
+
+  <autotools id="gdk-pixbuf">
     <branch />
+    <after>
+      <dep package="pango"/>
+    </after>
+  </autotools>
+
+  <autotools id="gtk+"
+	     autogenargs="--with-gdktarget=quartz --enable-introspection=no">
+    <branch revision="gtk-2-24-quartz" checkoutdir="gtk+-2.0"/>
     <dependencies>
       <dep package="pango"/>
+      <dep package="gir-repository"/>
+      <dep package="gdk-pixbuf"/>
       <dep package="atk"/>
     </dependencies>
     <after>
@@ -94,14 +126,28 @@
     </after>
   </autotools>
 
-  <autotools id="pixman" autogenargs="--disable-gtk">
+  <autotools id="gtk+-3.0"
+	     autogenargs="--with-gdktarget=quartz">
+    <branch module="gtk+" checkoutdir="gtk+-3.0" revision="quartz-integration"/>
+    <dependencies>
+      <dep package="pango"/>
+      <dep package="gir-repository"/>
+      <dep package="gdk-pixbuf"/>
+     <dep package="atk"/>
+    </dependencies>
+    <after>
+      <dep package="meta-gtk-osx-bootstrap"/>
+    </after>
+  </autotools>
+
+  <autotools id="pixman" autogenargs="--disable-gtk --disable-openmp">
     <branch repo="cairographics" module="pixman" />
     <after>
       <dep package="meta-gtk-osx-bootstrap"/>
     </after>
   </autotools>
 
-  <autotools id="cairo" autogenargs="--enable-pdf --enable-quartz --disable-xlib">
+  <autotools id="cairo" autogenargs="--enable-pdf --enable-quartz --enable-xlib=no --without-x">
     <branch repo="cairographics" module="cairo" />
     <dependencies>
       <dep package="pixman"/>
@@ -116,9 +162,6 @@
   <autotools id="ige-mac-integration" autogenargs="--disable-python">
     <branch repo="github"
 	    module="jralls/ige-mac-integration" />
-    <dependencies>
-      <dep package="gtk+"/>
-    </dependencies>
     <after>
       <dep package="meta-gtk-osx-bootstrap"/>
     </after>
